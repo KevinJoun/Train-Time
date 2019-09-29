@@ -35,5 +35,13 @@ $("#submit-btn").on("click",function(){
 });
 
 database.ref().on("child_added",function(childSnapshot){
-    console.log(childSnapshot);
+    var snap = childSnapshot.val()
+    var name = snap.trainName;
+    var dest = snap.destination;
+    var time = snap.trainTime;
+    var freq = snap.frequency;
+
+    var timeSplit = time.split(":");
+    var trainTimes = moment().hours(timeSplit[0]).minutes(timeSplit[1]);
+    var 
 })
