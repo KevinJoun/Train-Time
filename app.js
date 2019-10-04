@@ -23,7 +23,7 @@ $("#submit-btn").on("click",function(){
         trainName : trainName,
         destination : destination,
         trainTime : trainTime,
-        frequncy : frequency
+        frequency : frequency
     };
 
     database.ref().push(newTrain);
@@ -40,8 +40,31 @@ database.ref().on("child_added",function(childSnapshot){
     var dest = snap.destination;
     var time = snap.trainTime;
     var freq = snap.frequency;
+    var nextArrival;
+    var minsAway;
 
     var timeSplit = time.split(":");
     var trainTimes = moment().hours(timeSplit[0]).minutes(timeSplit[1]);
-    var 
+    var max = moment.max(moment(),trainTimes)
+    if(max === trainTimes){
+        nextArrival = trainTime.format("hh:mm A")
+        minsAway = traintimes.diff(moment(),"minutes");
+    } else{
+        var timeDif = moment().diff(trainTimes,"minutes");
+        var timeRemain = timeDif % freq;
+        minsAway = freq - timeRemain
+        nextArrival = moment().add(minsAway,"m").format("hh:mm A");
+    }
+    console.log(freq)
+    console.log(nextArrival)
+    console.log(minsAway)
+    $("#tableAppend").append(
+        $("<tr>").append(
+          $("<td>").text(name),
+          $("<td>").text(dest),
+          $("<td>").text(freq),
+          $("<td>").text(nextArrival),
+          $("<td>").text(minsAway)
+        )
+      );
 })
